@@ -1,0 +1,83 @@
+/*
+programmer: Giovanna Iosso
+date started: 01/20/2024
+
+function: this program's goal is to take an input from the user in the scanner
+in the form xx.xx (dollars and cents) and to return the dollar amount in change
+
+creativity: my program's creative function is that it will continue to ask the
+user for input until the desired input is given (a double), instead of just
+breaking if the user inputs a String; it also implements GUI using option,
+and input dialogs; finally the program will continue to ask the user if they
+would like to convert money until they click "Done"
+*/
+import javax.swing.*;
+import java.util.Scanner;
+public class MoneyConverter {
+
+
+    public static void main(String[] args) {
+        //declare variables
+//        Scanner sc = new Scanner(System.in);
+
+        int choice=0;
+
+        //Ask the user for a dollar amount, store it as a string
+//        System.out.println("Enter your dollar amount:");
+//        money=sc.nextLine();
+        while(choice==0) {
+            String money;
+            double dMoney=0;
+            boolean done=false;
+            money = JOptionPane.showInputDialog(null, "Enter the money you would like to convert to change");
+            //tries to parse the string to a double, continues to ask user if
+            //they input the money amount in the wrong format
+            while (!done) {
+                try {
+                    dMoney = Double.parseDouble(money);
+                    done = true;
+                } catch (Exception e) {
+//                System.out.println("Please enter your money in the form xx.xx");
+//                money = sc.nextLine();
+                    money = JOptionPane.showInputDialog(null, "Please enter the money in the form xx.xx");
+                }//end try/catch
+            }//end while loop
+
+            //convert money to pennies, store as int
+            int iMoney = (int) (dMoney * 100);
+            //initialize quarter, dime, nickel, penny values
+            int q, d, n, p;
+
+            //get quarter, dime, nickel, penny values by using division and modulus
+            q = iMoney / 25;
+            iMoney = iMoney % 25;
+            d = iMoney / 10;
+            iMoney = iMoney % 10;
+            n = iMoney / 5;
+            iMoney = iMoney % 5;
+            p = iMoney;
+
+            //adds each amount of change to a string, accounting for 0 amounts
+            //as well as singular vs plural versions of change
+            String message = "";
+            //quarters
+            if (q > 1) message += q + " quarters";
+            else if (q == 1) message += "1 quarter";
+            //dimes
+            if (!message.isEmpty() && d != 0) message += " and ";
+            if (d > 1) message += d + " dimes";
+            else if (d == 1) message += "1 dime";
+            //nickels
+            if (!message.isEmpty() && n != 0) message += " and ";
+            if (n == 1) message += "1 nickel";
+            //pennies
+            if (!message.isEmpty() && p != 0) message += " and ";
+            if (p > 1) message += p + " pennies";
+            else if (p == 1) message += "1 penny";
+
+//        System.out.println(message);
+            String[] options = {"Convert", "Done"};
+            choice = JOptionPane.showOptionDialog(null, message + "\nWould you like to convert more money?", null, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+        }
+    }//End Main
+}//End MoneyConverter.java
